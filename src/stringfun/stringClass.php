@@ -252,7 +252,7 @@ class StringClass
 	 */
 	public function to_metaphone($word)
 	{
-		reutrn metaphone($word);
+		return metaphone($word);
 	}
 
 	/**
@@ -352,4 +352,52 @@ class StringClass
 	{
 		return sprintf(func_get_args());
 	}
+
+	/**
+	 * 扫描
+	 * @return [type] [description]
+	 */
+	public function to_sscanf()
+	{
+		return sscanf(func_get_args());
+	}
+
+	public function to_str_ireplace($find, $repalce, $str, $ignore = true)
+	{
+		if($ignore == true){
+			return str_replace($find, $replace, $str, $ignore);
+		}
+		return str_ireplace($find, $replace, $str);
+	}
+
+	public function to_str_pad($str, $length, $pad_string, $pad_type)
+	{
+		return str_pad($str, $length, $pad_string, $pad_type);
+	}
+
+	public function to_str_repeat($input, $length)
+	{
+		return str_repeat($input, $length);
+	}
+
+	public function to_rot13($str)
+	{
+		return str_rot13($str);
+	}
+
+	public function to_str_shuffle($str)
+	{
+		return str_shuffle($str);
+	}
+
+	public function to_str_split($str, $length)
+	{
+		return str_split($str, $length);
+	}
+
+	public function to_str_word_count($str)
+	{
+		return str_word_count($str);
+	}
+
 }

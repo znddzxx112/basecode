@@ -42,4 +42,27 @@ class StringClassTest extends PHPUnit_Framework_TestCase
 		$chop_string = $obj->to_chop($string,"\r\n!");
 		$this->assertEquals("Hello world",$chop_string);
 	}
+
+	public function test_to_rot13()
+	{
+		$obj = new \Znddzxx112\Stringfun\StringClass();
+		$rot_str = $obj->to_rot13("A");
+		$this->assertEquals("N", $rot_str);
+	}
+
+	public function test_to_str_split()
+	{
+		$obj = new \Znddzxx112\Stringfun\StringClass();
+		$split_arr = $obj->to_str_split("Hello World!", 4);
+		$this->assertEquals(array("Hell", "o Wo", "rld!"), $split_arr);
+	}
+
+	public function test_to_str_word_count()
+	{
+		$obj = new \Znddzxx112\Stringfun\StringClass();
+		$count = $obj->to_str_word_count("Hello World!");
+		$this->assertEquals(2, $count);
+	}
+
+	
 }
