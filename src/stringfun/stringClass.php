@@ -25,18 +25,25 @@ class StringClass
 	 * @param [type] $string   [description]
 	 * @param [type] $charlist [description]
 	 */
-	public function add_cslashes($string, $charlist)
+	public function add_cslashes($string, $charlist ='', $is_add = true)
 	{
-		return addcslashes($string, $charlist);
+		if($is_add == true){
+			return addcslashes($string, $charlist);
+		}
+		return stripcslashes($string);
+		
 	}
 
 	/**
 	 * slashes
 	 * @param [type] $string [description]
 	 */
-	public function add_slashes($string)
+	public function add_slashes($string, $is_add = true)
 	{
-		return addslashes($string);
+		if($is_add == true){
+			return addslashes($string);
+		}
+		return stripslashes($string);
 	}
 
 	/**
@@ -400,4 +407,166 @@ class StringClass
 		return str_word_count($str);
 	}
 
+	public function to_str_cmp($str1, $str2, $case=true)
+	{
+		if($case == true){
+			//大小写不敏感
+			return strcasecmp($str1, $str2);
+		}
+		return strcmp($str, $str2);
+	}
+
+	/**
+	 * 在str中查找search,返回 search第一字母在str位置以后的字符串
+	 * @param  [type]  $str    [description]
+	 * @param  [type]  $search [description]
+	 * @param  boolean $ignore [description]
+	 * @return [type]          [description]
+	 */
+	public function to_strchr($str, $search, $ignore = true, $from = false)
+	{
+		if($ignore == true){
+			return stristr($str, $search);
+		}
+		
+		return strchr($str, $search);
+	}
+
+	/**
+	 * 在str找到search时，距离start几个字符
+	 * @param  [type] $str    [description]
+	 * @param  [type] $charlist [description]
+	 * @param  [type] $start  [description]
+	 * @param  [type] $length [description]
+	 * @return [type]         [description]
+	 */
+	public function to_strcspn($str, $charlist, $start, $length)
+	{
+		return strcspn($str, $charlist, $start, $length);
+	}
+
+	/**
+	 * 剥去string中 除allow之外的html标签
+	 * @param  [type] $string [description]
+	 * @param  [type] $allow  [description]
+	 * @return [type]         [description]
+	 */
+	public function to_strip_tags($string, $allow)
+	{
+		return strip_tags($string, $allow);
+	}
+
+	public function to_strpos($string, $needle, $ignore = true, $from = false)
+	{
+		if($ignore == true){
+			//忽略大小写
+			if($from == true){
+				return strripos($string, $needle);
+			}
+			return stripos($string, $needle);
+		}
+		if($from == true){
+			return strrpos($string, $needle);
+		}
+		return strpos($string, $needle);
+		
+	}
+
+	public function to_strlen($str)
+	{
+		return strlen($str);
+	}
+
+	public function to_strrev($str)
+	{
+		return strrev($str);
+	}
+
+	public function to_strspn($string, $charlist)
+	{
+		return strspn($string, $charlist);
+	}
+
+	public function to_strstr($string, $search)
+	{
+		return strstr($string, $search);
+	}
+
+	public function to_strtolowerorupper($string, $lower = true)
+	{
+		if($lower == true){
+			return strtolower($string);
+		}
+		return strtoupper($string);
+	}
+
+	/**
+	 * 字符串替换
+	 * @param  [type] $string [description]
+	 * @param  [type] $from   [description]
+	 * @param  [type] $to     [description]
+	 * @return [type]         [description]
+	 */
+	public function to_strtr($string, $from , $to)
+	{
+		return strtr($string, $from, $to);
+	}
+
+	/**
+	 * 切割字符串
+	 * @param  [type] $str    [description]
+	 * @param  [type] $start  [description]
+	 * @param  [type] $length [description]
+	 * @return [type]         [description]
+	 */
+	public function to_substr($str, $start, $length)
+	{
+		return substr($str, $start, $length);
+	}
+
+	/**
+	 * 计算search在str出现的次数
+	 * @param  [type] $str    [description]
+	 * @param  [type] $search [description]
+	 * @param  [type] $start  [description]
+	 * @param  [type] $length [description]
+	 * @return [type]         [description]
+	 */
+	public function to_substr_count($str, $search, $start, $length)
+	{
+		return substr_count($str, $search, $start, $length);
+	}
+
+	/**
+	 * replace替换str一部分
+	 * @param  [type] $str     [description]
+	 * @param  [type] $replace [description]
+	 * @param  [type] $start   [description]
+	 * @param  [type] $length  [description]
+	 * @return [type]          [description]
+	 */
+	public function to_substr_replace($str, $replace, $start, $length)
+	{
+		return substr_replace($str, $replace, $start, $length);
+	}
+
+	/**
+	 * 首字母大写
+	 * @param  [type] $string [description]
+	 * @return [type]         [description]
+	 */
+	public function to_ucfirst($string)
+	{
+		return ucfirst($string);
+	}
+
+	/**
+	 * 字符串单词首字母大写
+	 * @param  [type] $string [description]
+	 * @return [type]         [description]
+	 */
+	public function to_ucwords($string)
+	{
+		return ucwords($string);
+	}
 }
