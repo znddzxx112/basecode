@@ -4,7 +4,7 @@ namespace Znddzxx112\Mysqlfun;
 /**
 * Mysql
 * @method boolen select_db(String $db) 选择db
-* @method mixed executeSQL(String $sql) 执行语句
+* @method mixed exec(String $sql) 执行语句
 * @method array get_error_info() 获取最近一次报错信息和错误码
 */
 class MysqlClass
@@ -50,6 +50,8 @@ class MysqlClass
 		}
 		if($mysql_conn != false){
 			$this->mysql_conn = $mysql_conn;
+			#设定字符集
+			mysql_set_charset("utf8",$this->mysql_conn);
 		}else{
 			//返回错误信息 错误码
 			$this->get_error_info();
@@ -63,6 +65,10 @@ class MysqlClass
 		}
 	}
 
+	/* ********************
+	 * public functions  *
+	 * ********************/
+
 	/**
 	 * 选择db
 	 * @param  string $db [description]
@@ -75,10 +81,65 @@ class MysqlClass
 
 	/**
 	 * 执行语句
+	 * @param  string $code 999122 前三位表示模块名称 第四位代表语句类型1：查找，2：插入，3：更新，4删除 第五，六位代表次序
+	 * @param  string $sql [<description>]
+	 * @param  array  $data 数据
+	 * @param  array  $type 数据对应的类型
+	 * @return [type]       [description]
+	 */
+	public function exec($code = '', $sql = '' , $data = array(), $type = array())
+	{
+		$cleardata = $this->_clearData($data, $type);
+		if($cleardata === false) return false;
+
+		//变量替换
+		$key = 1;
+		foreach ($cleardata as $value) {
+			$sql = str_replace('{:'.$key.'}', $value, $sql);
+			$key += 1;
+		}
+
+		//执行sql
+		$exec_result = $this->executeSQL($sql);
+		if($exec_result == false) return false;
+
+		$ob = $this->_getob($code);
+		switch ($ob) {
+			case '1':
+				return $this->get_arrayresult();
+				break;
+			case '2':
+				return $this->get_insert_id();
+				break;
+			case '3':
+			case '4':
+				return $this->get_affected();
+				break;
+			default:
+				return false;
+				break;
+		}
+	}
+
+	/**
+	 * 获取最近一次报错信息和错误码
+	 * @return [type] [description]
+	 */
+	public function get_error_info()
+	{
+		return $this->error_info;
+	}
+
+	/* ********************
+	 * private functions  *
+	 * ********************/
+
+	/**
+	 * 执行语句
 	 * @param  string $sql [description]
 	 * @return [type]      [description]
 	 */
-	public function executeSQL($sql = '')
+	private function executeSQL($sql = '')
 	{
 		$this->result = mysql_query($sql, $this->mysql_conn);
 		if($this->result == false){
@@ -93,10 +154,8 @@ class MysqlClass
 			$this->records = 0;
 		}
 
-		//update delete result
-		$this->affected = @mysql_affected_rows($this->result);
+		$this->affected = @mysql_affected_rows($this->mysql_conn);
 
-		//select result
 		if($this->records > 0)
 		{
 			$this->arrayResults();
@@ -106,45 +165,19 @@ class MysqlClass
 	}
 
 	/**
-	 * 返回select结果
+	 * 获取一条关联数组
 	 * @return [type] [description]
 	 */
-	public function get_arrayresult()
-	{
-		return $this->arrayedResult;
-	}
-
-	/**
-	 * 返回insert结果
-	 * @return [type] [description]
-	 */
-	public function lastInsertID(){
-        return mysql_insert_id($this->mysql_conn);
-    }
-
-    /**
-     * 返回update insert结果
-     * @return [type] [description]
-     */
-    public function get_affected(){
-    	return $this->affected;
-    }
-
-	/**
-	 * 获取最近一次报错信息和错误码
-	 * @return [type] [description]
-	 */
-	public function get_error_info()
-	{
-		return $this->error_info;
-	}
-
 	private function arrayResult()
 	{
 		 $this->arrayedResult = mysql_fetch_assoc($this->result);
 		 return $this->arrayedResult;
 	}
 
+	/**
+	 * 获取多条关联数组
+	 * @return [type] [description]
+	 */
 	private function arrayResults()
 	{
 		if($this->records == 1){
@@ -157,6 +190,10 @@ class MysqlClass
         return $this->arrayedResult;
 	}
 
+	/**
+	 * 获取错误信息
+	 * @return [type] [description]
+	 */
 	private function _fetch_error()
 	{
 		$this->error_info = array(
@@ -165,6 +202,72 @@ class MysqlClass
 			);
 	}
 
+	/**
+	 * 返回数组结果
+	 * @return [type] [description]
+	 */
+	private function get_arrayresult()
+	{
+		return $this->arrayedResult;
+	}
 
+	/**
+	 * 返回insert结果
+	 * @return [type] [description]
+	 */
+	private function get_insert_id(){
+        return mysql_insert_id($this->mysql_conn);
+    }
+
+    /**
+     * 返回影响行数
+     * @return [type] [description]
+     */
+    private function get_affected(){
+    	return $this->affected;
+    }
+
+    /**
+	 * 获取操作符
+	 * @param  [type] $code [description]
+	 * @return [type]       [description]
+	 */
+	private function _getob($code)
+	{
+		if(strlen($code) < 4) return false;
+		return substr($code, 3, 1);#第四位
+	}
+
+	private function _clearData($data = array(), $type = array())
+	{
+		if(count($data) != count($type)){
+			return false;
+		}
+		//数据确定类型
+		$cleardata = array();
+		foreach ($type as $key => $value) {
+			switch ($value) {
+				case 'none':
+					$cleardata[] = $data[$key];
+					break;
+				case 'string':
+					$cleardata[] = '\''.mysql_real_escape_string($data[$key]).'\'';
+					break;
+				case 'integer':
+					$cleardata[] = (int)$data[$key];
+					break;
+				case 'float':
+					$cleardata[] = (float)$data[$key];
+					break;
+				case 'double':
+					$cleardata[] = (double)$data[$key];
+					break;
+				default:
+					return false;
+					break;
+			}
+		}
+		return $cleardata;
+	}
 
 }
