@@ -80,6 +80,16 @@ class MysqlClass
 	}
 
 	/**
+	 * 事务处理
+	 * @return [type] [description]
+	 */
+	public function transtion($status)
+	{
+		if(in_array($status, array("BEGIN","COMMIT","ROLLBACK"))) return false;
+		return mysql_query($status, $this->mysql_conn);
+	}
+
+	/**
 	 * 执行语句
 	 * @param  string $code 999122 前三位表示模块名称 第四位代表语句类型1：查找，2：插入，3：更新，4删除 第五，六位代表次序
 	 * @param  string $sql [<description>]
@@ -191,18 +201,6 @@ class MysqlClass
 	}
 
 	/**
-	 * 获取错误信息
-	 * @return [type] [description]
-	 */
-	private function _fetch_error()
-	{
-		$this->error_info = array(
-				'error' => mysql_error($this->mysql_conn),
-				'errno' => mysql_errno($this->mysql_conn)
-			);
-	}
-
-	/**
 	 * 返回数组结果
 	 * @return [type] [description]
 	 */
@@ -228,6 +226,18 @@ class MysqlClass
     }
 
     /**
+	 * 获取错误信息
+	 * @return [type] [description]
+	 */
+	private function _fetch_error()
+	{
+		$this->error_info = array(
+				'error' => mysql_error($this->mysql_conn),
+				'errno' => mysql_errno($this->mysql_conn)
+			);
+	}
+
+    /**
 	 * 获取操作符
 	 * @param  [type] $code [description]
 	 * @return [type]       [description]
@@ -246,21 +256,25 @@ class MysqlClass
 		//数据确定类型
 		$cleardata = array();
 		foreach ($type as $key => $value) {
+			$preg_result = preg_match("/[ \']/", $data[$key]);
+			if($preg_result>0) return false;
+			$escap_data = mysql_real_escape_string($data[$key], $this->mysql_conn);
 			switch ($value) {
 				case 'none':
 					$cleardata[] = $data[$key];
 					break;
 				case 'string':
-					$cleardata[] = '\''.mysql_real_escape_string($data[$key]).'\'';
+					$cleardata[] = '\''.$escap_data.'\'';
 					break;
+				case 'int':
 				case 'integer':
-					$cleardata[] = (int)$data[$key];
+					$cleardata[] = (int)$escap_data;
 					break;
 				case 'float':
-					$cleardata[] = (float)$data[$key];
+					$cleardata[] = (float)$escap_data;
 					break;
 				case 'double':
-					$cleardata[] = (double)$data[$key];
+					$cleardata[] = (double)$escap_data;
 					break;
 				default:
 					return false;
