@@ -1,15 +1,18 @@
-<?php 
-
+<?php
 namespace Znddzxx112\Mysqlfun;
+
 /**
-* mysqli
+* Mysqlipool
+* @method object get_instance(string $host,string $username,string $passwd,string $dbname,int $port,boolean $ignore) 单例化
 */
 class Mysqlipool
 {
 	private static $_mysqliClient = null;
 
-	//单例化
-	public static function get_instance($host, $username, $passwd, $dbname, $port = 3306, $ignore = false)
+	/**
+	 * 单例化
+	 */
+	public static function get_instance($host = '', $username = '', $passwd = '', $dbname = '', $port = 3306, $ignore = false)
 	{
 		if(self::$_mysqliClient == null || $ignore === true){
 			self::$_mysqliClient = null;
@@ -18,7 +21,13 @@ class Mysqlipool
 		return self::$_mysqliClient;
 	}
 }
-
+/**
+ * mysqliClient
+ * @method mixed exec(string $code, string $sql, string $data) 执行语句
+ * @method array get_error_info() 获取报错信息和错误码
+ * @method array get_all_base_info() 获取基础信息
+ * @method void  set_change(array $change_user, string $db, string $charset) 设置基础信息
+ */
 class MysqliClient
 {
 	/**
@@ -141,7 +150,7 @@ class MysqliClient
 	}
 
 	/**
-	 * 获取最近一次报错信息和错误码
+	 * 获取报错信息和错误码
 	 * @return [type] [description]
 	 */
 	public function get_error_info()
@@ -150,7 +159,7 @@ class MysqliClient
 	}
 
 	/**
-	 * 返回客户端信息
+	 * 获取基础信息
 	 * @return [type] [description]
 	 */
 	public function get_all_base_info()
@@ -159,7 +168,7 @@ class MysqliClient
 	}
 
 	/**
-	 * 统一设置
+	 * 设置基础信息
 	 * @param array  $change_user [description]
 	 * @param string $db          [description]
 	 * @param string $charset     [description]
@@ -181,13 +190,10 @@ class MysqliClient
 	 * private functions * 
 	 * ***************** */
 
-	private function makeValuesReferenced($arr){
-	    $refs = array();
-	    foreach($arr as $key => $value)
-	        $refs[$key] = &$arr[$key];
-	    return $refs;
-	}
-
+	/**
+	 * 返回关联数组结果
+	 * @return [type] [description]
+	 */
 	private function get_arrayresult()
 	{
 		$array_result = array();
@@ -202,6 +208,11 @@ class MysqliClient
 		return $array_result;
 	}
 
+	/**
+	 * 设置错误信息
+	 * @param [type] $error [description]
+	 * @param [type] $errno [description]
+	 */
 	private function set_error_info($error, $errno)
 	{
 		$this->error_info = array(
@@ -222,6 +233,10 @@ class MysqliClient
 						);
 	}
 
+	/**
+	 * 预处理
+	 * @return [type] [description]
+	 */
 	private function _pre_func()
 	{
 		$this->_mysqli->set_charset('utf8');
@@ -232,4 +247,18 @@ class MysqliClient
 		$this->all_base_info['server_version'] = $this->_mysqli->server_version;
 		$this->all_base_info['info'] = $this->_mysqli->info;
 	}
+
+	/**
+	 * 数组值引用
+	 * @param  [type] $arr [description]
+	 * @return [type]      [description]
+	 */
+	private function makeValuesReferenced($arr = array()){
+	    $refs = array();
+	    foreach($arr as $key => $value){
+	        $refs[$key] = &$arr[$key];
+	    }
+	    return $refs;
+	}
+
 }
