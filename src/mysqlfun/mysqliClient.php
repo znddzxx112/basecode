@@ -4,13 +4,62 @@ namespace Znddzxx112\Mysqlfun;
 /**
 * mysqli
 */
+class Mysqlipool
+{
+	private static $_mysqliClient = null;
+
+	//单例化
+	public static function get_instance($host, $username, $passwd, $dbname, $port = 3306, $ignore = false)
+	{
+		if(self::$_mysqliClient == null || $ignore === true){
+			self::$_mysqliClient = null;
+			self::$_mysqliClient = new \Znddzxx112\Mysqlfun\MysqliClient($host, $username, $passwd, $dbname, $port);
+		}
+		return self::$_mysqliClient;
+	}
+}
+
 class MysqliClient
 {
+	/**
+	 * 客户端随机编号
+	 * @var integer
+	 */
+	public $client_id = 0;
+
+	/**
+	 * mysqli对象
+	 * @var null
+	 */
 	private $_mysqli = null;
 
+	/**
+	 * mysqli_stmt对象
+	 * @var null
+	 */
+	private $_mysqli_stmt = null
+
+	/**
+	 * mysqli_result对象
+	 * @var null
+	 */
+	private $_mysqli_result= null;
+
+	/**
+	 * 所有基础信息
+	 * @var array
+	 */
+	public $all_base_info = array();
+
+	/**
+	 * 执行错误信息
+	 * @var array
+	 */
 	private $error_info = array();
 
-	private $_mysqli_result=array();
+	/* *************** *
+	 * magic functions * 
+	 * *************** */
 
 	public function __construct($host, $username, $passwd, $dbname, $port = 3306)
 	{
@@ -19,7 +68,7 @@ class MysqliClient
 			$this->set_error_info($this->_mysqli->connet_error, $this->_mysqli->connect_errno);
 			throw new Exception($this->_mysqli->connet_error, $this->_mysqli->connect_errno);
 		}
-		$this->_mysqli->set_charset('utf8');
+		$this->_pre_func();
 	}
 
 	public function __destruct()
@@ -28,6 +77,10 @@ class MysqliClient
 			$this->_mysqli->close();
 		}
 	}
+
+	/* **************** *
+	 * public functions * 
+	 * **************** */
 
 	/**
 	 * 执行语句
@@ -39,24 +92,33 @@ class MysqliClient
 	 */
 	public function exec($code = '', $sql = '' , $data = array())
 	{
-		$stmt = $this->_mysqli->prepare($sql);
+		$this->_mysqli_stmt = $this->_mysqli->prepare($sql);
 
 		//绑定变量
 		if(count($data)>0){
-			call_user_func_array(array($stmt, 'bind_param'), $this->makeValuesReferenced($data));
+			try{
+				call_user_func_array(array($this->_mysqli_stmt, 'bind_param'), $this->makeValuesReferenced($data));
+			}catch(Exception $e){
+				$this->set_error_info($this->_mysqli->connet_error, $e->getMessage());
+				return false;
+			}
 		}
 
-		$stmt->execute();
+		$exec_result = $this->_mysqli_stmt->execute();
+		if($exec_result == false){
+			$this->set_error_info($this->_mysqli->connet_error, $this->_mysqli->connect_errno);
+			return false;
+		}
 
-		$this->_mysqli_result = $stmt->get_result();
+		$this->_mysqli_result = $this->_mysqli_stmt->get_result();
 
-		$this->_num_rows = $stmt->num_rows;
+		$this->_num_rows = @$this->_mysqli_result->num_rows;
 
-		$this->_affected_rows = $stmt->affected_rows;
+		$this->_affected_rows = $this->_mysqli_stmt->affected_rows;
 
-		$this->_insert_id = $stmt->insert_id;
+		$this->_insert_id = $this->_mysqli_stmt->insert_id;
 
-		$stmt->close();
+		$this->_mysqli_stmt->close();
 
 		$ob = substr($code, 3, 1);
 		switch ($ob) {
@@ -87,6 +149,34 @@ class MysqliClient
 		return $this->error_info;
 	}
 
+	/**
+	 * 返回客户端信息
+	 * @return [type] [description]
+	 */
+	public function get_all_base_info()
+	{
+		return $this->all_base_info;
+	}
+
+	/**
+	 * 统一设置
+	 * @param array  $change_user [description]
+	 * @param string $db          [description]
+	 * @param string $charset     [description]
+	 */
+	public function set_change($change_user = array(), $db = '', $charset = 'utf8')
+	{
+		if(count($change_user) > 0) {
+			$this->_mysqli->change_user($change_user['username'], $change_user['password'], $change_user['db']);
+		}
+		if($db != ''){
+			$this->_mysqli->select_db($db);
+		}
+		if($charset != ''){
+			$this->_mysqli->set_charset($charset);
+		}
+	}
+
 	/* ***************** *
 	 * private functions * 
 	 * ***************** */
@@ -108,6 +198,7 @@ class MysqliClient
 				$array_result[] = $row;
 			}
 		}
+		$this->_mysqli_result->close();
 		return $array_result;
 	}
 
@@ -115,7 +206,30 @@ class MysqliClient
 	{
 		$this->error_info = array(
 							'error' => $error,
-							'errno' => $errno
-			);
+							'errno' => $errno,
+							'connect_errno'=> $this->_mysqli->connect_errno,
+							'connect_error'=> $this->_mysqli->connect_error,
+							'real_errno' => $this->_mysqli->errno,
+							'real_error' => $this->_mysqli->error,
+							'sqlstate' => $this->_mysqli->sqlstate,
+							'warning_count' => $this->_mysqli->get_warnings(),
+							'charset'=>$this->_mysqli->get_charset(),
+							'server_info'=>$this->_mysqli->get_server_info(),
+							'system_stat'=>$this->_mysqli->stat(),
+							'thread_id'=>$this->thread_id(),
+							'thread_safe'=>$this->thread_safe(),
+
+						);
+	}
+
+	private function _pre_func()
+	{
+		$this->_mysqli->set_charset('utf8');
+		$this->client_id = mt_rand(1000,9999);
+		$this->all_base_info['host_info'] = $this->_mysqli->host_info;
+		$this->all_base_info['protocol_version'] = $this->_mysqli->protocol_version;
+		$this->all_base_info['server_info'] = $this->_mysqli->server_info;
+		$this->all_base_info['server_version'] = $this->_mysqli->server_version;
+		$this->all_base_info['info'] = $this->_mysqli->info;
 	}
 }
