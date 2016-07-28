@@ -3,22 +3,40 @@ namespace Znddzxx112\Mysqlfun;
 
 /**
 * Mysqlipool
-* @method object get_instance(string $host,string $username,string $passwd,string $dbname,int $port,boolean $ignore) 单例化
+* @method mixed   get_instance(string $instance,boolean $ignore) 获取实例
+* @method boolean set_config(string $host,string $username,string $passwd,string $dbname,int $port) 设置参数
 */
 class Mysqlipool
 {
-	private static $_mysqliClient = null;
+	private static $_config = array();
 
-	/**
-	 * 单例化
-	 */
-	public static function get_instance($host = '', $username = '', $passwd = '', $dbname = '', $port = 3306, $ignore = false)
+	private static $_mysqliClientInstances = null;
+
+	public static function get_instance($instance = 'default', $ignore = false)
 	{
-		if(self::$_mysqliClient == null || $ignore === true){
-			self::$_mysqliClient = null;
-			self::$_mysqliClient = new \Znddzxx112\Mysqlfun\MysqliClient($host, $username, $passwd, $dbname, $port);
+		if(!array_key_exists($instance, self::$_mysqliClientInstances) || $ignore === true){
+
+			if(!array_key_exists($instance, self::$_config)){
+				return false;
+			}
+			self::$_mysqliClientInstances[$instance] = new \Znddzxx112\Mysqlfun\MysqliClient(self::$_config[$instance]['host'], 
+																							 self::$_config[$instance]['username'], 
+																							 self::$_config[$instance]['passwd'],
+																							 self::$_config[$instance]['dbname'],
+																							 self::$_config[$instance]['port']
+																							);
 		}
-		return self::$_mysqliClient;
+		return self::$_mysqliClientInstances[$instance];
+	}
+
+	public static function set_config($instance = 'default', $host = '', $username = '', $passwd = '', $dbname = '', $port = 3306)
+	{
+		self::$_mysqliClientInstances[$instance]['host'] 	= $host;
+		self::$_mysqliClientInstances[$instance]['username']= $username;
+		self::$_mysqliClientInstances[$instance]['passwd'] 	= $passwd;
+		self::$_mysqliClientInstances[$instance]['dbname'] 	= $dbname;
+		self::$_mysqliClientInstances[$instance]['port'] 	= $port;
+		return true;
 	}
 }
 /**
