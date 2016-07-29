@@ -10,6 +10,10 @@ class PdoClient
 
 	private static $config = array();
 
+	private $_pdoclient = null;
+
+	private $stmt = null;
+
 	private $wheres = array();
 
 	private $params = array();
@@ -18,20 +22,38 @@ class PdoClient
 
 	private $froms = array();
 
-	public function get_instance()
+	public static function get_instance($instance = 'default')
 	{
-		
+		if(!array_key_exists($instance, self::$instances)){
+
+			if(!array_key_exists($instance, self::$config)){
+				return false;
+			}
+
+			self::$instances[$instance] = new \Znddzxx112\Mysqlfun\PdoClient(self::$config[$instance]['dsn'], 
+																				self::$config[$instance]['username'], 
+																				self::$config[$instance]['passwd']
+																			);
+		}
+		return self::$instances[$instance];
 	}
 
-	public function set_config()
+	public static function set_config($instance = 'default', $dsn = '', $username = '', $passwd = '')
 	{
-
+		self::$config[$instance]['dsn'] 	= $dsn;
+		self::$config[$instance]['username']= $username;
+		self::$config[$instance]['passwd'] 	= $passwd;
+		return true;
 	}
 
-	public function __construct()
+	public function __construct($dsn = '', $username = '', $passwd = '')
 	{
-		
+		$this->_pdoclient = new \PDO($dsn, $username, $passwd);
 	}
+
+	/* **************** *
+	 * public function  *
+	 * **************** */
 
 	public function where($where, $params = '')
 	{
@@ -61,10 +83,35 @@ class PdoClient
 		return $this;
 	}
 
-	public function execQuery()
+	public function execQuery($type = "select")
 	{
 		$sql = $this->buildSQL();
-		echo $sql;
+		$this->stmt = $this->_pdoclient->prepare($sql);
+
+		try {
+			call_user_func_array(array($this->stmt, 'bindParam'), $this->params);
+		} catch(\Execption $e) {
+			throw $e;
+		}
+
+		$this->stmt->execute();
+		if( $type == "select" ) {
+			$rowcount = $this->stmt->rowCount();
+			$result_arr = array();
+			if( $rowcount > 1 ) {
+				while ($row = $this->stmt->fetch(\PDO::FETCH_ASSOC)) {
+					$result_arr[] = $row;
+				}
+			} else {
+				$result_arr  = $this->stmt->fetch(\PDO::FETCH_ASSOC);
+			}
+			return $result_arr;
+		} elseif( $type == "insert" ) {
+			return $this->_pdoclient->lastInsertId;
+		} elseif( $type == "update" || $type == "delete" ) {
+			return $this->stmt->rowCount();
+		}
+		return false;
 	}
 
 	/* **************** *
