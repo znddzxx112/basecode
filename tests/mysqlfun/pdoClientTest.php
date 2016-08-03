@@ -12,19 +12,21 @@ class PdoClientTest extends PHPUnit_Framework_TestCase
 	
 	public function test_where()
 	{
-		$obj = new \Znddzxx112\Mysqlfun\PdoClient();
-		$obj->where("`user_id` = '1028'")
-			->where("`product_id` = '1024'")
-			->from("`product`");
-		echo $obj->execQuery();
+		\Znddzxx112\Mysqlfun\PdoClient::set_config('default', 'mysql:dbname=caocms;host=127.0.0.1', 'root', '');
+		$obj = \Znddzxx112\Mysqlfun\PdoClient::get_instance('default');
+		$obj->where("`mobile` = ?", '18868803292')
+			->where("`username` = ?", 'bitcao123')
+			->from("`b_user`");
+		var_dump($obj->execQuery()) ;
 	}
 
 	public function test_where_array()
 	{
-		$obj = new \Znddzxx112\Mysqlfun\PdoClient();
-		$obj->where(array("user_id","product_id"),array(1028,1024))
-			->from("product");
-		echo $obj->execQuery();
+		\Znddzxx112\Mysqlfun\PdoClient::set_config('where_array', 'mysql:dbname=caocms;host=127.0.0.1', 'root', '');
+		$obj = \Znddzxx112\Mysqlfun\PdoClient::get_instance('where_array');
+		$obj->where(array("mobile","username"),array('18868803292','bitcao123'))
+			->from("b_user");
+		var_dump($obj->execQuery()) ;
 	}
 
 }

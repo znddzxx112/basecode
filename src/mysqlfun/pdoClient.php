@@ -88,13 +88,13 @@ class PdoClient
 		$sql = $this->buildSQL();
 		$this->stmt = $this->_pdoclient->prepare($sql);
 
-		try {
-			call_user_func_array(array($this->stmt, 'bindParam'), $this->params);
-		} catch(\Execption $e) {
-			throw $e;
-		}
+		// try {
+		// 	call_user_func_array(array($this->stmt, 'bindParam'), $this->makereference($this->params));
+		// } catch(\Execption $e) {
+		// 	throw $e;
+		// }
 
-		$this->stmt->execute();
+		$this->stmt->execute($this->params);
 		if( $type == "select" ) {
 			$rowcount = $this->stmt->rowCount();
 			$result_arr = array();
@@ -168,6 +168,15 @@ class PdoClient
 				$this->params[] = $p;
 			}
 		}
+	}
+
+	private function makereference($params = array())
+	{
+		$reference = array();
+		foreach ($params as $key => $param) {
+			$reference[$key] =& $params[$key];
+		}
+		return $reference;
 	}
 
 }
