@@ -15,6 +15,13 @@ class SimpleXmlClass
 
 	}
 
+	public function load_file($file_path='')
+	{
+		if($file_path == '') return false;
+		$this->xmlelement = simplexml_load_file($file_path);
+		return true;
+	}
+
 	public function load_string($str = '')
 	{
 		$this->xmlelement = simplexml_load_string($str);
