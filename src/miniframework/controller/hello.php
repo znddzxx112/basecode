@@ -15,5 +15,8 @@ class Hello extends Controller
 	public function world()
 	{
 		echo 'mycontroller';
+
+		$this->load->service('Tool_service');
+		$this->Tool_service->hello_service();
 	}
 }

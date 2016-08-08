@@ -8,7 +8,7 @@ require SYSPATH.'common.php';
 /**
  * 错误处理函数
  */
-set_error_handler("_error_handler");
+// set_error_handler("_error_handler");
 
 /**
  * 加载配置文件

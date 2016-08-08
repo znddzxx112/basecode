@@ -12,7 +12,7 @@
  
 if (! function_exists('load_class'))
 {
-	function load_class($class = '')
+	function load_class($class = '', $folder = SYSPATH)
 	{
 		static $classes;
 
@@ -20,11 +20,13 @@ if (! function_exists('load_class'))
 			return $classes[$class];
 		}
 
-		if( ! file_exists(SYSPATH.$class.'.php')){
-			exit($class . 'not exists');
+		if( ! file_exists($folder.$class.'.php')){
+			exit($class . ' not exists');
 		}
 
-		require SYSPATH.$class.'.php';
+		require $folder.$class.'.php';
+
+		is_loaded($class);
 
 		$class = ucfirst($class);
 		$classes[$class] = new $class();
@@ -77,5 +79,47 @@ if (! function_exists('_error_handler'))
 
 	    /* Don't execute PHP internal error handler */
 	    return true;
+	}
+}
+
+/**
+ * 错误显示
+ *
+ * @access	public
+ * @param	type	name
+ * @return	type	
+ */
+ 
+if (! function_exists('show_error'))
+{
+	function show_error($msg = '')
+	{
+		header("Content-Type:text-html;charset=utf-8");
+		exit($msg);
+	}
+}
+
+/**
+ * Function Name
+ *
+ * Function description
+ *
+ * @access	public
+ * @param	type	name
+ * @return	type	
+ */
+ 
+if (! function_exists('is_loaded'))
+{
+	function &is_loaded($class = '')
+	{
+		static $_is_loaded = array();
+
+		if ($class !== '')
+		{
+			$_is_loaded[strtolower($class)] = $class;
+		}
+
+		return $_is_loaded;
 	}
 }
