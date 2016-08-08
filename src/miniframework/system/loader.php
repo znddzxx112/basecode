@@ -24,4 +24,22 @@ class Loader
 		$ci->$service = load_class($service ,BASEPATH.'/service/');
 	}
 
+	/**
+	 * 加载 view
+	 * @param  string $view [description]
+	 * @return [type]       [description]
+	 */
+	public function view($view = '', $vars = array())
+	{
+		if( ! file_exists(BASEPATH.'view/'.$view.'.php')) {
+			show_error('view : '.$view.' not exists');
+		}
+
+		foreach ($vars as $key => $value) {
+			$$key = $value;
+		}
+
+		include(BASEPATH.'view/'.$view.'.php');
+	}
+
 }

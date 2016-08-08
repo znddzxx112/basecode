@@ -16,7 +16,9 @@ class Hello extends Controller
 	{
 		echo 'mycontroller';
 
-		$this->load->service('Tool_service');
-		$this->Tool_service->hello_service();
+		// $this->load->service('Tool_service');
+		// $this->Tool_service->hello_service();
+
+		$this->load->view('home', array('foo'=>'this main page'));
 	}
 }
