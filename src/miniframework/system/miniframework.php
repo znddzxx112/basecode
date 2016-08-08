@@ -18,34 +18,44 @@ if( ! isset($config)){
 	exit('config not exits');
 }
 
+if( ! isset($config['controller_path'])){
+	exit('config controller_path');
+}
+
+
 /**
  * 加载路由类
  */
 $RTR = load_class('router');
 
-// /**
-//  * 单例函数
-//  */
-// function &get_instance()
-// {
-// 	return '';
-// }
+/**
+ * 单例函数
+ */
+require SYSPATH . 'controller.php';
+function &get_instance()
+{
+	return Controller::get_instance();
+}
 
-// /**
-//  * 加载性能类
-//  */
+/**
+ * 加载性能类
+ */
 
-// /**
-//  * 实例化
-//  */
-// $class = $RTR->getClass();
-// $method = $RTR->getMethod();
-// include(SYSPATH.$class.'.php');
-// $class_instance = new ucfirst($class)();
+/**
+ * 实例化
+ */
+$class = $RTR->getClass();
+$method = $RTR->getMethod();
 
-// /**
-//  * 执行方法
-//  */
-// $class_instance->$method();
+include( $config['controller_path'] . $class . '.php');
+
+$class_instance = new $class();
+
+/**
+ * 执行方法
+ */
+call_user_func_array(array(&$class_instance, $method), array());
+
+
 
 

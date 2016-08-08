@@ -26,7 +26,8 @@ if (! function_exists('load_class'))
 
 		require SYSPATH.$class.'.php';
 
-		$classes[$class] = new ucfirst($class)();
+		$class = ucfirst($class);
+		$classes[$class] = new $class();
 
 		return $classes[$class];
 	}
