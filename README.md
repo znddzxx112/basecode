@@ -1,10 +1,13 @@
 # basecode
-php base scripts,functions include phpunit
 
-## 使用说明
+focus on scripts , php functions
+
+#### usage
+
 ```
 git clone https://github.com/znddzxx112/basecode.git
 cd basecode
 composer install
 ```
-可发邮件至 znddzxx112@163.com
+
+mail to znddzxx112@163.com
