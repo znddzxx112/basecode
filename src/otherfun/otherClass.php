@@ -17,7 +17,7 @@ class OtherClass
 		die($string);
 	}
 
-	public function to_exit($mixed);
+	public function to_exit($mixed)
 	{
 		exit($mixed);
 	}
@@ -68,4 +68,55 @@ class OtherClass
 	
 	// 从二进制字符串对数据进行解包
 	// todo :unpack
+	
+	/**
+	 * 引用的变化
+	 * @return [type] [description]
+	 */
+	public function &quote()
+	{
+		static $count = 0;
+		$count ++;
+		return $count;
+	}
+
+	/**
+	 * header 404 写法
+	 * @return [type] [description]
+	 */
+	public function to_header_404()
+	{
+		header('HTTP/1.0 404 Not Found');
+	}
+
+	/**
+	 * header location 写法
+	 * @return [type] [description]
+	 */
+	public function to_header_location()
+	{
+		header('Location: http://example.com/');
+	}
+
+	public function to_header_charset()
+	{
+		header('Content-Type:text/html;charset=utf-8');
+	}
+
+	/**
+	 * pecl写法 EOF 顶格写，字符串拼接时不能使用 . 操作符
+	 * @return [type] [description]
+	 */
+	public function heredoc()
+	{
+		$title = 'heredoc';
+$html = <<<EOF
+	<html>
+   <head><title>$title</title></head>
+   <body>主页内容</body>
+   </html>
+EOF;
+		return $html;
+	}
+
 }
