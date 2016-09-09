@@ -170,4 +170,40 @@ EOF;
 		$this->foo = 'bar';
 	}
 
+	static public function getload($class){
+		$prefix = dirname(__file__).'/../mathfun/';
+		$class = substr($class,strrpos($class, '\\'));
+		$file = $prefix .lcfirst($class).'.php';
+		if(file_exists($file)){
+			include $file;
+		}
+	}
+
+	/**
+	 * 自动加载一种方式
+	 * @return [type] [description]
+	 */
+    static public function autoload()
+    {
+    	spl_autoload_register(__namespace__.'\OtherClass::getload');
+    }
+
+    public function agetload($class)
+    {
+    	$prefix = dirname(__file__).'/../mathfun/';
+		$class = substr($class,strrpos($class, '\\'));
+		$file = $prefix .lcfirst($class).'.php';
+		if(file_exists($file)){
+			include $file;
+		}
+    }
+
+    /**
+     * 自动加载第二种方式
+     * @return [type] [description]
+     */
+    public function aload()
+    {
+    	spl_autoload_register(array($this,'agetload'));
+    }
 }

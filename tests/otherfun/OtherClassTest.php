@@ -63,4 +63,17 @@ class OtherClassTest extends PHPUnit_Framework_TestCase
 		$otherClass = new OtherClass();
 	}
 
+	public function test_autoload()
+	{
+		OtherClass::autoload();
+		$mathobj = new \Znddzxx112\Mathfun\MathClass();
+	}
+
+	public function test_aautoload()
+	{
+		$Otherobj = new OtherClass();
+		$Otherobj->aload();
+		$mathobj = new \Znddzxx112\Mathfun\MathClass();
+	}
+
 }
