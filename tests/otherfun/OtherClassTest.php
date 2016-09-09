@@ -35,4 +35,32 @@ class OtherClassTest extends PHPUnit_Framework_TestCase
 		$html = $otherClass->heredoc();
 		var_dump($html);
 	}
+
+	public function test_get()
+	{
+		$otherClass = new OtherClass();
+		// var_dump($otherClass->foo);
+		$this->assertEquals($otherClass->foo,'bar');
+		// echo $otherClass->foo;
+	}
+
+	public function test_set()
+	{
+		$otherClass = new OtherClass();
+		$otherClass->foo = 'barset';
+		$this->assertEquals($otherClass->foo,'barset');
+	}
+
+	public function test_call()
+	{
+		$otherClass = new OtherClass();
+		// var_dump($otherClass->foofun('hello'));
+		$this->assertEquals($otherClass->foofun('hello'),'sayhello');
+	}
+
+	public function test_clone()
+	{
+		$otherClass = new OtherClass();
+	}
+
 }

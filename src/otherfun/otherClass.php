@@ -6,7 +6,9 @@ namespace Znddzxx112\Otherfun;
 */
 class OtherClass
 {
-	
+
+	private $vars = array('foo'=>'bar');
+
 	public function to_sleep($seconds)
 	{
 		sleep($seconds);
@@ -117,6 +119,55 @@ $html = <<<EOF
    </html>
 EOF;
 		return $html;
+	}
+
+	/**
+	 * session
+	 * @return [type] [description]
+	 */
+	public function sess()
+	{
+		// session_start();
+		// $_SESSION['foo'] = 'bar';
+		// // session_destroy();
+		// // echo $_SESSION['foo'] ;
+		// echo session_name();
+		// echo session_id();
+		// echo session_cache_expire();
+	}
+
+	public function parse_url($url)
+	{
+		$url = 'http://dummy.com/'.$url;
+		return parse_url($url);
+	}
+
+	public function foofun_api($args)
+	{
+		@list($word) = $args;
+		return 'say'.$word;
+	}
+
+	public function __get($key)
+	{
+		return $this->vars[$key];
+	}
+
+	public function __set($key,$val)
+	{
+		$this->vars[$key] = $val;
+	}
+
+	public function __call($func_name, $args)
+	{
+		$func_name = $func_name.'_api';
+		var_dump($args);
+		return $this->$func_name($args);
+	}
+
+	public function __clone()
+	{
+		$this->foo = 'bar';
 	}
 
 }

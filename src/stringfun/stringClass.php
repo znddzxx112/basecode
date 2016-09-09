@@ -569,4 +569,5 @@ class StringClass
 	{
 		return ucwords($string);
 	}
+
 }
