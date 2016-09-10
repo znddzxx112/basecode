@@ -1,7 +1,8 @@
 <?php 
 require __dir__.'/../../vendor/autoload.php';
 
-require __dir__.'/../../src/arrayfun/arrayCombineClass.php';
+// require __dir__.'/../../src/arrayfun/arrayCombineClass.php';
+require __dir__."/../../src/autoload.php";
 
 /**
 * array_combine

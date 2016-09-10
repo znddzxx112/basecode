@@ -1,7 +1,8 @@
 <?php 
 require "../../vendor/autoload.php";
 
-require __dir__."/../../src/arrayfun/arrayChangeKeyCaseClass.php";
+// require __dir__."/../../src/arrayfun/arrayChangeKeyCaseClass.php";
+require __dir__."/../../src/autoload.php";
 
 class ArrayChangeKeyCaseClassTest extends PHPUnit_Framework_TestCase
 {

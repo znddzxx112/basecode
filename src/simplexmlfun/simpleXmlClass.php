@@ -1,6 +1,6 @@
 <?php 
 
-namespace Znddzxx112\Simplexmlfun;
+namespace Znddzxx112\simplexmlfun;
 
 /**
 * simplexml

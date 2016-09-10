@@ -1,5 +1,5 @@
 <?php 
-namespace Znddzxx112\Mathfun;
+namespace Znddzxx112\mathfun;
 
 /**
 * math

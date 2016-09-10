@@ -1,5 +1,5 @@
 <?php 
-namespace Znddzxx112\Filterfun;
+namespace Znddzxx112\filterfun;
 
 /**
 * filter

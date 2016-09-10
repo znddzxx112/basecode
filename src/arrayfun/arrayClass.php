@@ -1,5 +1,5 @@
 <?php 
-namespace Znddzxx112\ArrayFun;
+namespace Znddzxx112\arrayfun;
 
 /**
 * Array

@@ -1,7 +1,8 @@
 <?php 
 require __dir__.'/../../vendor/autoload.php';
 
-require __dir__.'/../../src/mysqlfun/mysqliClient.php';
+// require __dir__.'/../../src/mysqlfun/mysqliClient.php';
+require __dir__."/../../src/autoload.php";
 
 
 /**
@@ -26,7 +27,7 @@ class MysqliClientTest extends PHPUnit_Framework_TestCase
 	
 	public function test_exec_select()
 	{
-		$obj = \Znddzxx112\Mysqlfun\Mysqlipool::get_instance("p:127.0.0.1", "root", "", "caocms", 3306);
+		$obj = \Znddzxx112\mysqlfun\Mysqlipool::get_instance("p:127.0.0.1", "root", "", "caocms", 3306);
 		echo $obj->client_id;
 		$result_array = $obj->exec("100101", "select * from `b_user` where `username` = ?", array("s","bitcao123"));
 		if($result_array === false){
@@ -38,7 +39,7 @@ class MysqliClientTest extends PHPUnit_Framework_TestCase
 
 	public function test_exec_insert()
 	{
-		$obj = \Znddzxx112\Mysqlfun\Mysqlipool::get_instance("127.0.0.1", "root", "", "caocms", 3306);
+		$obj = \Znddzxx112\mysqlfun\Mysqlipool::get_instance("127.0.0.1", "root", "", "caocms", 3306);
 		$result_array = $obj->exec("100201", "insert into `b_user`(`username`,`email`,`mobile`)values(?,?,?) " , 
 								array("sss","bitcao321132","znddzxx112@163.com","18868803292")
 							);

@@ -1,5 +1,5 @@
 <?php 
-namespace Znddzxx112\Arrayfun;
+namespace Znddzxx112\arrayfun;
 
 /**
 * ArrayChunk

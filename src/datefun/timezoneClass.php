@@ -1,5 +1,5 @@
 <?php 
-namespace Znddzxx112\Datefun;
+namespace Znddzxx112\datefun;
 
 /**
 * timezone

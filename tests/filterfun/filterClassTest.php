@@ -1,7 +1,8 @@
 <?php 
 require __dir__.'/../../vendor/autoload.php';
 
-require __dir__.'/../../src/filterfun/filterClass.php';
+// require __dir__.'/../../src/filterfun/filterClass.php';
+require __dir__."/../../src/autoload.php";
 
 /**
 * filterClass
@@ -11,7 +12,7 @@ class filterClassTest extends PHPUnit_Framework_TestCase
 	
 	public function test_get_filter_list()
 	{
-		$obj = new \Znddzxx112\Filterfun\FilterClass();
+		$obj = new \Znddzxx112\filterfun\FilterClass();
 		$filter_arr = $obj->get_filter_list();
 		$filter_arr_stand = array("int", "boolean", "float", "validate_regexp", "validate_url",
 								"validate_email", "validate_ip", "validate_mac", "string", "stripped",

@@ -1,5 +1,5 @@
 <?php 
-namespace Znddzxx112\Stringfun;
+namespace Znddzxx112\stringfun;
 
 /**
 * string

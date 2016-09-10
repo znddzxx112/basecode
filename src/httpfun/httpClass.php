@@ -1,5 +1,5 @@
 <?php 
-namespace Znddzxx112\Httpfun;
+namespace Znddzxx112\httpfun;
 
 /**
 * http

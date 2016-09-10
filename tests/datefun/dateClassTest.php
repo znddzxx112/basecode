@@ -1,7 +1,8 @@
 <?php 
 require __dir__.'/../../vendor/autoload.php';
 
-require __dir__.'/../../src/datefun/dateClass.php';
+// require __dir__.'/../../src/datefun/dateClass.php';
+require __dir__."/../../src/autoload.php";
 
 /**
 * date
@@ -12,7 +13,7 @@ class DateClassTest extends PHPUnit_Framework_TestCase
 	public function test_sunrise()
 	{
 		date_default_timezone_set("Asia/shanghai");
-		$obj = new \Znddzxx112\Datefun\DateClass();
+		$obj = new \Znddzxx112\datefun\DateClass();
 		$timestamp = mktime(0,0,0,7,18,2016);//2016-7-18 0:0:0
 		//杭州30.26,120.19 日出时间 05:09:39
 		$rise_time = $obj->sunrise($timestamp,SUNFUNCS_RET_STRING);
@@ -27,7 +28,7 @@ class DateClassTest extends PHPUnit_Framework_TestCase
 	public function test_sunset()
 	{
 		date_default_timezone_set("Asia/Shanghai");
-		$obj = new \Znddzxx112\Datefun\DateClass();
+		$obj = new \Znddzxx112\datefun\DateClass();
 		$timestamp = mktime(0,0,0,7,18,2016);//2016-7-18 0:0:0
 		$set_time = $obj->sunset($timestamp,SUNFUNCS_RET_STRING);
 		//杭州30.26,120.19 日落时间 19:01

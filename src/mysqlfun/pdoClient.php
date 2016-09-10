@@ -1,5 +1,5 @@
 <?php 
-namespace Znddzxx112\Mysqlfun;
+namespace Znddzxx112\mysqlfun;
 
 /**
 * pdo
