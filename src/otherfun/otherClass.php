@@ -1,9 +1,8 @@
 <?php
-namespace Znddzxx112\Otherfun;
+namespace Znddzxx112\otherfun;
 
-require dirname(__file__) . '/../designpatten/Singleton.php';
+use Singleton;
 
-use Znddzxx112\Designpatten\Singleton as Singleton;
 /**
 * other
 */
@@ -228,5 +227,14 @@ EOF;
     public function aload()
     {
     	spl_autoload_register(array($this,'agetload'));
+    }
+
+    /**
+     * 抛出异常
+     * @return [type] [description]
+     */
+    public function throwException()
+    {
+    	throw new \Znddzxx112\exceptionfun\OtherException("hello exception", 402);
     }
 }

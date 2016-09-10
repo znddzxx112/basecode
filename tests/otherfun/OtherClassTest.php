@@ -3,9 +3,10 @@
 require "../../vendor/autoload.php";
 
 
-require __dir__."/../../src/otherfun/otherClass.php";
+// require __dir__."/../../src/otherfun/otherClass.php";
+require __dir__."/../../src/autoload.php";
 
-use \Znddzxx112\Otherfun\OtherClass;
+// use \Znddzxx112\Otherfun\OtherClass;
 
 /**
 * 
@@ -82,4 +83,22 @@ class OtherClassTest extends PHPUnit_Framework_TestCase
 		echo $Otherobj->nowdoc();
 	}
 
+	/**
+	 * try catch finally
+	 * @return [type] [description]
+	 */
+	public function test_try()
+	{
+		$Otherobj = OtherClass::get_instance();
+		try {
+			$Otherobj->throwException();
+		} catch (\Exception $e) {
+			echo $e->getMessage();
+			echo $e->getCode();
+			echo $e->getFile();
+			echo $e->getLine();
+		} finally {
+			echo 'over';
+		}
+	}
 }
