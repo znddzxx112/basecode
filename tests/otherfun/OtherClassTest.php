@@ -76,4 +76,10 @@ class OtherClassTest extends PHPUnit_Framework_TestCase
 		$mathobj = new \Znddzxx112\Mathfun\MathClass();
 	}
 
+	public function test_singleton()
+	{
+		$Otherobj = OtherClass::get_instance();
+		echo $Otherobj->nowdoc();
+	}
+
 }

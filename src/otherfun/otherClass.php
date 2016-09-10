@@ -1,11 +1,19 @@
-<?php 
+<?php
 namespace Znddzxx112\Otherfun;
 
+require dirname(__file__) . '/../designpatten/Singleton.php';
+
+use Znddzxx112\Designpatten\Singleton as Singleton;
 /**
 * other
 */
 class OtherClass
 {
+
+	/**
+	 * 使用trait(构件) 代码复用，解决多接口
+	 */
+	use Singleton;
 
 	private $vars = array('foo'=>'bar');
 
@@ -117,6 +125,21 @@ $html = <<<EOF
    <head><title>$title</title></head>
    <body>主页内容</body>
    </html>
+EOF;
+		return $html;
+	}
+
+	/**
+	 * 与heredoc差别，引号，变量不起作用
+	 * @return [type] [description]
+	 */
+	public function nowdoc()
+	{
+		$html = <<<'EOF'
+		<html>
+		   <head><title>$title</title></head>
+		   <body>主页内容</body>
+		   </html>
 EOF;
 		return $html;
 	}
