@@ -1,7 +1,8 @@
 <?php 
 require "../../vendor/autoload.php";
 
-require __dir__."/../../src/arrayfun/arrayChunkClass.php";
+// require __dir__."/../../src/arrayfun/arrayChunkClass.php";
+require __dir__."/../../src/autoload.php";
 
 /**
 * array_chunk

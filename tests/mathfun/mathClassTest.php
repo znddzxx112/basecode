@@ -19,4 +19,16 @@ class MathClassTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals(1.34,$abs_num);
 
 	}
+
+	public function test_todec()
+	{
+		$obj = new \Znddzxx112\Mathfun\MathClass();
+		echo $obj->todec('g000', 16);
+	}
+
+	public function test_decto()
+	{
+		$obj = new \Znddzxx112\Mathfun\MathClass();
+		echo $obj->decto(100,2);
+	}
 }

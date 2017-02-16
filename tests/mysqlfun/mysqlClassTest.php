@@ -1,7 +1,9 @@
 <?php 
 require __dir__.'/../../vendor/autoload.php';
 
-require __dir__.'/../../src/mysqlfun/mysqlClass.php';
+// require __dir__.'/../../src/mysqlfun/mysqlClass.php';
+
+require __dir__."/../../src/autoload.php";
 
 class MysqlClassTestl extends PHPUnit_Framework_TestCase
 {
@@ -34,7 +36,7 @@ class MysqlClassTestl extends PHPUnit_Framework_TestCase
 
 	public function test_exec()
 	{
-		$obj = new \Znddzxx112\Mysqlfun\MysqlClass("127.0.0.1","3306", "root", "");
+		$obj = new \Znddzxx112\mysqlfun\MysqlClass("127.0.0.1","3306", "root", "");
 		$obj->select_db("caocms");
 		$result = $obj->exec('100120', "select * from `b_user` where `username` = {:1} and `id` = {:2}", array("bitcao123", 2), array("string", "integer"));
 		if($result == false){

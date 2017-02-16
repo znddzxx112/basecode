@@ -1,6 +1,6 @@
 <?php 
 
-namespace Znddzxx112\Pagination;
+namespace Znddzxx112\pagination;
 
 class PaginationClass
 {

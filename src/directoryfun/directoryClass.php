@@ -1,5 +1,5 @@
 <?php 
-namespace Znddzxx112\Directoryfun;
+namespace Znddzxx112\directoryfun;
 
 /**
 * directory

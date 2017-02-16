@@ -1,7 +1,8 @@
 <?php 
 
 require __dir__.'/../../vendor/autoload.php';
-require __dir__.'/../../src/simplexmlfun/simpleXmlClass.php';
+// require __dir__.'/../../src/simplexmlfun/simpleXmlClass.php';
+require __dir__."/../../src/autoload.php";
 
 /**
 * SimplexmlClass
@@ -16,7 +17,7 @@ class SimpleXmlClassTest extends PHPUnit_Framework_TestCase
 
 	public function test_asxml()
 	{
-		$obj = new \Znddzxx112\Simplexmlfun\SimpleXmlClass();
+		$obj = new \Znddzxx112\simplexmlfun\SimpleXmlClass();
 		$str = "<?xml version='1.0'?> 
 				<document>
 				 <title>Forty What?</title>
@@ -32,7 +33,7 @@ class SimpleXmlClassTest extends PHPUnit_Framework_TestCase
 
 	public function test_getAttributes()
 	{
-		$obj = new \Znddzxx112\Simplexmlfun\SimpleXmlClass();
+		$obj = new \Znddzxx112\simplexmlfun\SimpleXmlClass();
 		$str = "<?xml version='1.0'?> 
 				<document>
 				 <title>Forty What?</title>
@@ -48,7 +49,7 @@ class SimpleXmlClassTest extends PHPUnit_Framework_TestCase
 
 	public function test_getChildren($value='')
 	{
-		$obj = new \Znddzxx112\Simplexmlfun\SimpleXmlClass();
+		$obj = new \Znddzxx112\simplexmlfun\SimpleXmlClass();
 		$str = "<?xml version='1.0'?> 
 				<document>
 				 <title>Forty What?</title>
@@ -64,7 +65,7 @@ class SimpleXmlClassTest extends PHPUnit_Framework_TestCase
 
 	public function test_getCount($value='')
 	{
-		$obj = new \Znddzxx112\Simplexmlfun\SimpleXmlClass();
+		$obj = new \Znddzxx112\simplexmlfun\SimpleXmlClass();
 		$str = "<?xml version='1.0'?> 
 				<document>
 				 <title>Forty What?</title>
@@ -80,7 +81,7 @@ class SimpleXmlClassTest extends PHPUnit_Framework_TestCase
 
 	public function test_addChild($value='')
 	{
-		$obj = new \Znddzxx112\Simplexmlfun\SimpleXmlClass();
+		$obj = new \Znddzxx112\simplexmlfun\SimpleXmlClass();
 		$str = "<?xml version='1.0'?> 
 				<document>
 				 <title>Forty What?</title>
@@ -97,7 +98,7 @@ class SimpleXmlClassTest extends PHPUnit_Framework_TestCase
 
 	public function test_addAttr($value='')
 	{
-		$obj = new \Znddzxx112\Simplexmlfun\SimpleXmlClass();
+		$obj = new \Znddzxx112\simplexmlfun\SimpleXmlClass();
 		$str = "<?xml version='1.0'?> 
 				<document>
 				 <title>Forty What?</title>
@@ -115,7 +116,7 @@ class SimpleXmlClassTest extends PHPUnit_Framework_TestCase
 
 	public function test_load_file($value='')
 	{
-		$obj = new \Znddzxx112\Simplexmlfun\SimpleXmlClass();
+		$obj = new \Znddzxx112\simplexmlfun\SimpleXmlClass();
 		$file_path = __dir__."/xmltest.xml";
 		if(file_exists($file_path)){
 			$obj->load_file($file_path);

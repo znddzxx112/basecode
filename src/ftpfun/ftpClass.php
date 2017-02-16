@@ -1,5 +1,5 @@
 <?php 
-namespace Znddzxx112\Ftpfun;
+namespace Znddzxx112\ftpfun;
 
 /**
 * ftp

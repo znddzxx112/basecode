@@ -1,5 +1,5 @@
 <?php 
-namespace Znddzxx112\Filesystemfun;
+namespace Znddzxx112\filesystemfun;
 
 /**
 * filesystem

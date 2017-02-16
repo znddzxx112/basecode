@@ -1,5 +1,5 @@
 <?php 
-namespace Znddzxx112\Calendarfun;
+namespace Znddzxx112\calendarfun;
 
 /**
 * CalendarClass
