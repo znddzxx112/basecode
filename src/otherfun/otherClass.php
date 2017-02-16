@@ -17,10 +17,6 @@ class OtherClass
 		die($string);
 	}
 
-	public function to_exit($mixed);
-	{
-		exit($mixed);
-	}
 
 	public function to_uniqid()
 	{
@@ -61,6 +57,22 @@ class OtherClass
 	public function to_constant($key)
 	{
 		return constant($key);
+	}
+
+	public function to_isset($a, $b)
+	{
+		return isset($a, $b);
+	}
+
+	public function to_fuhao()
+	{
+		return true == true ?: 1;
+	}
+
+	public function to_spl_object_hash($object)
+	{
+		// 返回object对象的 hash id
+		return spl_object_hash($object);
 	}
 
 	// 数据装入一个二进制字符串
